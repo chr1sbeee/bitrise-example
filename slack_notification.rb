@@ -7,7 +7,7 @@ pp ENV
 
 # Map emails to slack
 teamMembers = {
-  'chris.blackmore@asos.com' => '@chris.blackmore',
+  'chris.blackmore@asos.com' => 'chris.blackmore',
 }
 
 # Constants
