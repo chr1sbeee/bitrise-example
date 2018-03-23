@@ -1,1 +1,1 @@
-warn("Danger is working.")
+warn("Danger is working in PR.")
