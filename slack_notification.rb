@@ -35,10 +35,10 @@ client.auth_test
 # Message based on circumstances
 if (didFailBecauseOfTests)
      if (isBuiltFromDevelop || isBuiltFromRelease)
-         slackMessage = "@`#{branch}` has failed testing, the last commiter was #{authorSlackUsername} - see #{buildLogURL} for more information."
+         slackMessage = "@`#{branch}` has failed testing, the last commiter was @#{authorSlackUsername} - see #{buildLogURL} for more information."
          client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
      else
-         slackMessage = "@#{authorSlackUsername} your PR has fail testing - see #{buildLogURL} for more information."
+         slackMessage = "@#{authorSlackUsername} your PR has failed testing - see #{buildLogURL} for more information."
          client.chat_postMessage(channel: "bitrise-slack-test", text: slackMessage, as_user: true)
     end
 end
