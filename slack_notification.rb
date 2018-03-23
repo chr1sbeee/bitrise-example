@@ -2,9 +2,13 @@
 require 'slack-ruby-client'
 require 'pp'
 
+# Prints env variables, remove at some point
+pp ENV
+
 # Constants
 slackChannel = "bitrise-slack-test"
-slackFailureMessage = "*Build finished.*"
+pullRequestURL = ENV['BITRISEIO_PULL_REQUEST_REPOSITORY_URL']
+isPullRequest = pullRequestURL != nil
 
 # Slack setup
 Slack.configure do |config|
@@ -13,15 +17,8 @@ end
 client = Slack::Web::Client.new
 client.auth_test
 
-# Configure message
-#slackMessage = slackFailureMessage
-#slackMessage = "#{slackMessage}\nIPA Path: #{ipaPath}"
-#slackMessage = "#{slackMessage}\nPR: #{pullRequestURL}"
-#slackMessage = "#{slackMessage}\nTrigger: #{trigger}"
-#slackMessage = "#{slackMessage}\nLog: #{buildLogURL}"
-
-# Prints env variables, remove at some point
-pp ENV
-
-# Send
-client.chat_postMessage(channel: slackChannel, text: "Slack is working.", as_user: true)
+if (isPullRequest)
+    client.chat_postMessage(channel: slackChannel, text: "Pull request finished.", as_user: true)
+else
+    # Message if failed
+end
