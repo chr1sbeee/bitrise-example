@@ -3,7 +3,7 @@ require 'slack-ruby-client'
 require 'pp'
 
 # Constants
-slackChannel = "br-slack-test"
+slackChannel = "bitrise-slack-test"
 slackFailureMessage = "*Build finished.*"
 
 # Slack setup
@@ -14,7 +14,7 @@ client = Slack::Web::Client.new
 client.auth_test
 
 # Configure message
-slackMessage = slackFailureMessage
+#slackMessage = slackFailureMessage
 #slackMessage = "#{slackMessage}\nIPA Path: #{ipaPath}"
 #slackMessage = "#{slackMessage}\nPR: #{pullRequestURL}"
 #slackMessage = "#{slackMessage}\nTrigger: #{trigger}"
@@ -24,4 +24,4 @@ slackMessage = slackFailureMessage
 pp ENV
 
 # Send
-client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
+client.chat_postMessage(channel: slackChannel, text: "Slack is working.", as_user: true)
