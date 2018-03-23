@@ -42,4 +42,3 @@ if (didFailBecauseOfTests)
          client.chat_postMessage(channel: "bitrise-slack-test", text: slackMessage, as_user: true)
     end
 end
-
