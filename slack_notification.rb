@@ -10,7 +10,7 @@ teamMembers = {
   'chris.blackmore@asos.com' => '@chris.blackmore',
 }
 authorEmailAddress = ENV['GIT_CLONE_COMMIT_AUTHOR_EMAIL']
-authorSlackUsername = teamMembers[authorEmailAddress] ?? 
+authorSlackUsername = teamMembers[authorEmailAddress]
 slackChannel = "bitrise-slack-test"
 
 # URL's
