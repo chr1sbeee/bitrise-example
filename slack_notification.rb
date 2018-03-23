@@ -11,6 +11,7 @@ teamMembers = {
 }
 authorEmailAddress = ENV['GIT_CLONE_COMMIT_AUTHOR_EMAIL']
 authorSlackUsername = teamMembers[authorEmailAddress] ?? 
+slackChannel = "bitrise-slack-test"
 
 # URL's
 pullRequestURL = ENV['BITRISEIO_PULL_REQUEST_REPOSITORY_URL']
@@ -35,10 +36,10 @@ client.auth_test
 # Message based on circumstances
 if (didFailBecauseOfTests)
      if (isBuiltFromDevelop || isBuiltFromRelease)
-         slackMessage = "`#{branch}` has failed testing, the last commiter was #{authorSlackUsername} - see #{buildLogURL} for more information."
+         slackMessage = "<!here> a primary branch has failed testing.\n*Branch:* `#{branch}`\n*Last commit author:* #{authorSlackUsername}\n*Log:* #{buildLogURL}"
          client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
      else
-         slackMessage = "#{authorSlackUsername} your PR has failed testing - see #{buildLogURL} for more information."
-         client.chat_postMessage(channel: "bitrise-slack-test", text: slackMessage, as_user: true)
+         slackMessage = "A Pull Request branch has failed testing.\n*Branch:* `#{branch}`\n*PR:* #{pullRequestURL}\n*Last commit author:* #{authorSlackUsername}\n*Log:* #{buildLogURL}"
+         client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
     end
 end
