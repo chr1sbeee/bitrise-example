@@ -2,23 +2,26 @@
 require 'slack-ruby-client'
 require 'pp'
 
-# Prints env variables, remove at some point
-pp ENV
+# Slack constants
 
-# Map emails to slack
+# TODO: Map all emails to slack user names
 teamMembers = {
-  'chris.blackmore@asos.com' => 'chris.blackmore',
+  'chris.blackmore@asos.com' => '@chris.blackmore',
 }
 
-# Constants
-slackChannel = "bitrise-slack-test"
+authorEmailAddress = ENV['GIT_CLONE_COMMIT_AUTHOR_EMAIL']
 pullRequestURL = ENV['BITRISEIO_PULL_REQUEST_REPOSITORY_URL']
 buildLogURL = ENV['BITRISE_BUILD_URL']
-isPullRequest = pullRequestURL != nil
-didFailBecauseOfTests = ENV['BITRISE_XCODE_TEST_RESULT'] == "failed"
-authorEmailAddress = ENV['GIT_CLONE_COMMIT_AUTHOR_EMAIL']
-authorSlackUsername = teamMembers[authorEmailAddress]
 branch = ENV['BITRISE_GIT_BRANCH']
+testResult = ENV['BITRISE_XCODE_TEST_RESULT']
+authorSlackUsername = teamMembers[authorEmailAddress]
+slackChannel = "bitrise-slack-test"
+isBuiltFromDevelop = branch == "develop"
+isBuiltFromRelease = branch.start_with?("release") 
+isPullRequest = pullRequestURL != nil
+didFailBecauseOfTests = testResult == "failed"
+
+##########################################
 
 # Slack setup
 Slack.configure do |config|
@@ -27,13 +30,15 @@ end
 client = Slack::Web::Client.new
 client.auth_test
 
+# Message based on circumstances
 if (didFailBecauseOfTests)
-    if (isPullRequest)
-        slackMessage = "@#{authorSlackUsername} your PR has fail testing - see #{buildLogURL} for more information."
-        client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
-    else
-        slackMessage = "@here #{branch} has failed testing - see #{buildLogURL} for more information."
-        client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
+     if (isBuiltFromDevelop || isBuiltFromRelease)
+         slackMessage = "<!here> a primary branch has failed testing.\n*Branch:* `#{branch}`\n*Log:* #{buildLogURL}"
+         client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
+     else
+         # Uncomment these 2 lines to message if a PR fails
+         # slackMessage = "A Pull Request branch has failed testing.\n*Branch:* `#{branch}`\n*PR:* #{pullRequestURL}\n*Last commit author:* #{authorSlackUsername}\n*Log:* #{buildLogURL}"
+         # client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
     end
 end
 
