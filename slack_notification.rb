@@ -31,6 +31,10 @@ end
 client = Slack::Web::Client.new
 client.auth_test
 
+
+puts authorEmailAddress
+
+
 # Message based on circumstances
 if (didFailBecauseOfTests)
      if (isBuiltFromDevelop || isBuiltFromRelease)
