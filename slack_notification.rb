@@ -7,7 +7,7 @@ pp ENV
 # TODO: Map all emails to slack user names
 teamMembers = {
   'chris.blackmore@asos.com' => '@chris.blackmore',
-}
+} 
 
 authorEmailAddress = ENV['GIT_CLONE_COMMIT_AUTHOR_EMAIL']
 pullRequestURL = ENV['BITRISEIO_PULL_REQUEST_REPOSITORY_URL']
