@@ -33,7 +33,8 @@ client.auth_test
 
 
 puts authorEmailAddress
-
+puts authorSlackUsername
+puts teamMembers
 
 # Message based on circumstances
 if (didFailBecauseOfTests)
