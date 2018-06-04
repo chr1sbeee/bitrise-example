@@ -31,10 +31,9 @@ end
 client = Slack::Web::Client.new
 client.auth_test
 
-
-puts authorEmailAddress
-puts authorSlackUsername
-puts teamMembers
+puts = "authorEmailAddress: #{authorEmailAddress}"
+puts = "authorSlackUsername: #{authorSlackUsername}"
+puts = "teamMembers: #{teamMembers}"
 
 # Message based on circumstances
 if (didFailBecauseOfTests)
