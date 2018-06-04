@@ -10,7 +10,7 @@ teamMembers = {
 } 
 
 # Since BR creates a separate merge commit we need to roll back to the last commit author that wasn't a merge
-authorEmailAddress = `git show -s --format='%ae' $(git rev-list --topo-order --no-merges HEAD -n 1)`
+authorEmailAddress = `git show -s --format='%ae' $(git rev-list --topo-order --no-merges HEAD -n 1)`.strip
 pullRequestURL = ENV['BITRISEIO_PULL_REQUEST_REPOSITORY_URL']
 buildLogURL = ENV['BITRISE_BUILD_URL']
 branch = ENV['BITRISE_GIT_BRANCH']
