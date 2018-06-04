@@ -16,7 +16,7 @@ branch = ENV['BITRISE_GIT_BRANCH']
 testResult = ENV['BITRISE_XCODE_TEST_RESULT']
 authorSlackUsername = teamMembers[authorEmailAddress]
 slackChannel = "bitrise-slack-test"
-isBuiltFromDevelop = branch == "develop"
+isBuiltFromDevelop = branch == "develop" 
 isBuiltFromRelease = branch.start_with?("release") 
 isPullRequest = pullRequestURL != nil
 didFailBecauseOfTests = testResult == "failed"
