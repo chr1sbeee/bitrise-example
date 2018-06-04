@@ -2,23 +2,33 @@
 require 'slack-ruby-client'
 require 'pp'
 
-# Prints env variables, remove at some point
 pp ENV
 
-# Map emails to slack
+# TODO: Map all emails to slack user names
 teamMembers = {
-  'chris.blackmore@asos.com' => 'chris.blackmore',
-}
+  'chris.blackmore@asos.com' => '@chris.blackmore',
+} 
 
-# Constants
-slackChannel = "bitrise-slack-test"
-pullRequestURL = ENV['BITRISEIO_PULL_REQUEST_REPOSITORY_URL']
+# Since BR creates a separate merge commit we need to roll back to the last commit author that wasn't a merge
+authorEmailAddress = `git show -s --format='%ae' $(git rev-list --topo-order --no-merges HEAD -n 1)`.strip
+pullRequestNumber = ENV['BITRISE_PULL_REQUEST']
+pullRequestURL = "https://github.com/asosteam/asos-native-ios/pull/#{pullRequestNumber}"
 buildLogURL = ENV['BITRISE_BUILD_URL']
-isPullRequest = pullRequestURL != nil
-didFailBecauseOfTests = ENV['BITRISE_XCODE_TEST_RESULT'] == "failed"
-authorEmailAddress = ENV['GIT_CLONE_COMMIT_AUTHOR_EMAIL']
-authorSlackUsername = teamMembers[authorEmailAddress]
 branch = ENV['BITRISE_GIT_BRANCH']
+testResult = ENV['BITRISE_XCODE_TEST_RESULT']
+authorSlackUsername = teamMembers[authorEmailAddress]
+slackChannel = "bitrise-slack-test"
+isBuiltFromDevelop = branch == "develop" 
+isBuiltFromRelease = branch.start_with?("release") 
+isPullRequest = pullRequestURL != nil
+didFailBecauseOfTests = testResult == "failed"
+
+# Early exit
+if (!didFailBecauseOfTests)
+    exit 0
+end
+
+##########################################
 
 # Slack setup
 Slack.configure do |config|
@@ -27,14 +37,13 @@ end
 client = Slack::Web::Client.new
 client.auth_test
 
-if (didFailBecauseOfTests)
-    if (isPullRequest)
-        slackMessage = "@#{authorSlackUsername} your PR has fail testing - see #{buildLogURL} for more information."
-        client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
-    else
-        slackMessage = "@here #{branch} has failed testing - see #{buildLogURL} for more information."
-        client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
-    end
+# Message based on circumstances
+if (isBuiltFromDevelop || isBuiltFromRelease)
+    slackMessage = "<!here> a primary branch has failed testing.\n*Branch:* `#{branch}`\n*Log:* #{buildLogURL}"
+    client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
+else
+    slackMessage = "<#{authorSlackUsername}> your recent commit for `#{branch}` has failed unit/UI tests.\n*PR:* #{pullRequestURL}\n*Log:* #{buildLogURL}"
+    client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
 end
 
 
