@@ -2,7 +2,7 @@
 require 'slack-ruby-client'
 require 'pp'
 
-# Slack constants
+pp ENV
 
 # TODO: Map all emails to slack user names
 teamMembers = {
