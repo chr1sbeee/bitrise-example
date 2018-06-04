@@ -38,12 +38,10 @@ client = Slack::Web::Client.new
 client.auth_test
 
 # Message based on circumstances
-if (didFailBecauseOfTests)
-     if (isBuiltFromDevelop || isBuiltFromRelease)
-         slackMessage = "<!here> a primary branch has failed testing.\n*Branch:* `#{branch}`\n*Log:* #{buildLogURL}"
-         client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
-     else
-          slackMessage = "<#{authorSlackUsername}> your recent commit for `#{branch}` has failed unit/UI tests.\n*PR:* #{pullRequestURL}\n*Log:* #{buildLogURL}"
-          client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
-    end
+if (isBuiltFromDevelop || isBuiltFromRelease)
+    slackMessage = "<!here> a primary branch has failed testing.\n*Branch:* `#{branch}`\n*Log:* #{buildLogURL}"
+    client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
+else
+    slackMessage = "<#{authorSlackUsername}> your recent commit for `#{branch}` has failed unit/UI tests.\n*PR:* #{pullRequestURL}\n*Log:* #{buildLogURL}"
+    client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
 end
