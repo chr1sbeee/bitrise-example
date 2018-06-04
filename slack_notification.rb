@@ -36,8 +36,7 @@ if (didFailBecauseOfTests)
          slackMessage = "<!here> a primary branch has failed testing.\n*Branch:* `#{branch}`\n*Log:* #{buildLogURL}"
          client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
      else
-         # Uncomment these 2 lines to message if a PR fails
-         # slackMessage = "A Pull Request branch has failed testing.\n*Branch:* `#{branch}`\n*PR:* #{pullRequestURL}\n*Last commit author:* #{authorSlackUsername}\n*Log:* #{buildLogURL}"
-         # client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
+          slackMessage = "A Pull Request branch has failed testing.\n*Branch:* `#{branch}`\n*PR:* #{pullRequestURL}\n*Last commit author:* #{authorSlackUsername}\n*Log:* #{buildLogURL}"
+          client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
     end
 end
