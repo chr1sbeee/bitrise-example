@@ -10,7 +10,5 @@ import XCTest
 @testable import BitriseExample
 
 class BitriseExampleTests: XCTestCase {
-    func testExample() {
-		XCTFail()
-    }
+	
 }
