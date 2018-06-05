@@ -43,6 +43,7 @@ is_built_from_develop = branch_name == "develop"
 is_built_from_release = branch_name.start_with?("release") 
 is_pull_request = pull_request_number != nil
 xcode_test_did_fail = test_result == "failed"
+slack_message_title = "*Build failure!*"
 
 # Slack setup
 Slack.configure do |config|
@@ -55,10 +56,10 @@ if (xcode_test_did_fail)
     slack_message = ""
     if (is_built_from_develop || is_built_from_release)
         # release/develop
-        slack_message = "<!here> *Build failure!*\n*Branch:* `#{branch_name}\n*Commit author:*:<@#{commit_author_slack_username}>\n*Log:* #{build_log_url}"
+        slack_message = "<!here> #{slack_message_title}\n*Branch*\n`#{branch_name}`\n*Commit author*\n<@#{commit_author_slack_username}>\n*Log*\n#{build_log_url}"
     else
         # PR
-        slack_message = "*Build failure!*\n*Pull Request*\n#{pull_request_url}\n\n*Commit author*\n<@#{commit_author_slack_username}>\n\n *Workflow*\n#{workflow_title}\n\n*Log*\n#{build_log_url}"
+        slack_message = "#{slack_message_title}\n*Pull Request*\n#{pull_request_url}\n*Commit author*\n<@#{commit_author_slack_username}>\n*Workflow*\n#{workflow_title}\n*Log*\n#{build_log_url}"
     end 
     client.chat_postMessage(channel: slack_channel, text: slack_message, as_user: true)
 end
