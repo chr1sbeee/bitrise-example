@@ -48,8 +48,8 @@ end
 
 counter = 1
 file = File.new(ENV['BITRISE_STEP_FORMATTED_OUTPUT_FILE_PATH'], "r")
-puts file
 while (line = file.gets)
+    puts "LINE!!"
     puts line
     counter = counter + 1
 end
