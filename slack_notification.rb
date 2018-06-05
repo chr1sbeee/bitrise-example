@@ -7,7 +7,7 @@ pp ENV
 # TODO: Map all emails to slack user names
 teamMembers = {
   'chris.blackmore@asos.com' => '@chris.blackmore',
-} 
+}   
 
 # Since BR creates a separate merge commit we need to roll back to the last commit author that wasn't a merge
 authorEmailAddress = `git show -s --format='%ae' $(git rev-list --topo-order --no-merges HEAD -n 1)`.strip
@@ -45,8 +45,3 @@ else
     slackMessage = "<#{authorSlackUsername}> your recent commit for `#{branch}` has failed unit/UI tests.\n*PR:* #{pullRequestURL}\n*Log:* #{buildLogURL}"
     client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
 end
-
-
-
-
-
