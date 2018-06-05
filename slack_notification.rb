@@ -39,8 +39,21 @@ if (didFailBecauseOfTests)
     end
 end
 
+
+markdownPath = ENV['BITRISE_STEP_FORMATTED_OUTPUT_FILE_PATH']
 counter = 1
-file = File.new("/var/folders/90/5stft2v13fb_m_gv3c8x9nwc0000gn/T/bitrise757480219/formatted_output.md", "r")
+file = File.new(markdownPath, "r")
+puts file
+while (line = file.gets)
+    puts line
+    counter = counter + 1
+end
+file.close 
+
+
+testResultPath = ENV['BITRISE_XCODE_RAW_TEST_RESULT_TEXT_PATH']
+counter = 1
+file = File.new(testResultPath, "r")
 puts file
 while (line = file.gets)
     puts line
