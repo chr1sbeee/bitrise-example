@@ -4,6 +4,8 @@ require 'pp'
 
 pp ENV
 
+puts "1"
+
 markdownPath = ENV['BITRISE_STEP_FORMATTED_OUTPUT_FILE_PATH']
 counter = 1
 file = File.new(markdownPath, "r")
@@ -12,6 +14,8 @@ while (line = file.gets)
     counter = counter + 1
 end
 file.close 
+
+puts "2"
 
 
 testResultPath = ENV['BITRISE_XCODE_RAW_TEST_RESULT_TEXT_PATH']
@@ -22,6 +26,8 @@ while (line = newFile.gets)
     newCounter = newCounter + 1
 end
 newFile.close 
+
+puts "3"
 
 
 # ENV
