@@ -1,8 +1,28 @@
 #!/usr/bin/env ruby
 require 'slack-ruby-client'
-
 require 'pp'
+
 pp ENV
+
+markdownPath = ENV['BITRISE_STEP_FORMATTED_OUTPUT_FILE_PATH']
+counter = 1
+file = File.new(markdownPath, "r")
+while (line = file.gets)
+    puts line
+    counter = counter + 1
+end
+file.close 
+
+
+testResultPath = ENV['BITRISE_XCODE_RAW_TEST_RESULT_TEXT_PATH']
+newCounter = 1
+newFile = File.new(testResultPath, "r")
+while (line = newFile.gets)
+    puts line
+    newCounter = newCounter + 1
+end
+newFile.close 
+
 
 # ENV
 pullRequestURL = ENV['BITRISEIO_PULL_REQUEST_REPOSITORY_URL']
@@ -18,7 +38,7 @@ teamMembers = {
 
 slackChannel = "bitrise-slack-test"
 isPullRequest = pullRequestURL != nil
-didFailBecauseOfTests = testResult == "failed" # "failed" if test fails or it fails to compile
+didFailBecauseOfTests = testResult == "failed"
 authorSlackUsername = teamMembers[authorEmailAddress]
 
 # Slack setup
@@ -39,21 +59,3 @@ if (didFailBecauseOfTests)
 end
 
 
-markdownPath = ENV['BITRISE_STEP_FORMATTED_OUTPUT_FILE_PATH']
-counter = 1
-file = File.new(markdownPath, "r")
-while (line = file.gets)
-    puts line
-    counter = counter + 1
-end
-file.close 
-
-
-testResultPath = ENV['BITRISE_XCODE_RAW_TEST_RESULT_TEXT_PATH']
-newCounter = 1
-newFile = File.new(testResultPath, "r")
-while (line = newFile.gets)
-    puts line
-    newCounter = newCounter + 1
-end
-newFile.close 
