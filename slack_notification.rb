@@ -8,6 +8,7 @@ pull_request_number = ENV['BITRISE_PULL_REQUEST']
 test_result = ENV['BITRISE_XCODE_TEST_RESULT']
 slack_channel = ENV['ASOS_ERROR_REPORTING_SLACK_CHANNEL']
 slack_token = ENV['ASOS_SLACK_API_TOKEN']
+workflow_title = ENV['BITRISE_TRIGGERED_WORKFLOW_TITLE']
 
 # Computed variables
 asos_team_members = {
@@ -57,7 +58,7 @@ if (xcode_test_did_fail)
         slack_message = "<!here> *Build failure!*\n*Branch:* `#{branch_name}\n*Commit author:*:<@#{commit_author_slack_username}>\n*Log:* #{build_log_url}"
     else
         # PR
-        slack_message = "*Build failure!*\n*Pull Request:* #{pull_request_url}\n*Commit author:*:<@#{commit_author_slack_username}>\n*Log:* #{build_log_url}"
+        slack_message = "*Build failure!*\n*Pull Request*\n#{pull_request_url}\n\n*Commit author*\n<@#{commit_author_slack_username}>\n\n *Workflow*\n#{workflow_title}\n\n*Log*\n#{build_log_url}"
     end 
     client.chat_postMessage(channel: slack_channel, text: slack_message, as_user: true)
 end
