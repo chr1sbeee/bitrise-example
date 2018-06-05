@@ -11,6 +11,6 @@ import XCTest
 
 class BitriseExampleTests: XCTestCase {
     func testExample() {
-		XCTFail()
+		XCTFail()  
     }
 }
