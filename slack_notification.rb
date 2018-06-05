@@ -54,12 +54,10 @@ if (xcode_test_did_fail)
     slack_message = ""
     if (is_built_from_develop || is_built_from_release)
         # release/develop
-        slack_message = "<!here> The latest build for `#{branch_name}` has failed, <@#{commit_author_slack_username}> was the last known commit author.\n*Log:* #{build_log_url}"
+        slack_message = "<!here> *Build failure!*\n*Branch:* `#{branch_name}\n*Commit author:*:<@#{commit_author_slack_username}>\n*Log:* #{build_log_url}"
     else
         # PR
-        slack_message = "<@#{commit_author_slack_username}> your recent commit for `#{branch}` has failed.\n*PR:* #{pull_request_url}\n*Log:* #{build_log_url}"
+        slack_message = "*Build failure!*\n*Pull Request:* #{pull_request_url}\n*Commit author:*:<@#{commit_author_slack_username}>\n*Log:* #{build_log_url}"
     end 
     client.chat_postMessage(channel: slack_channel, text: slack_message, as_user: true)
 end
-
-
