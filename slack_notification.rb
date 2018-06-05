@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 require 'slack-ruby-client'
 
-# TODO: REMOVE
 require 'pp'
 pp ENV
 
@@ -43,7 +42,6 @@ end
 markdownPath = ENV['BITRISE_STEP_FORMATTED_OUTPUT_FILE_PATH']
 counter = 1
 file = File.new(markdownPath, "r")
-puts file
 while (line = file.gets)
     puts line
     counter = counter + 1
@@ -52,11 +50,10 @@ file.close
 
 
 testResultPath = ENV['BITRISE_XCODE_RAW_TEST_RESULT_TEXT_PATH']
-counter = 1
-file = File.new(testResultPath, "r")
-puts file
-while (line = file.gets)
+newCounter = 1
+newFile = File.new(testResultPath, "r")
+while (line = newFile.gets)
     puts line
-    counter = counter + 1
+    newCounter = newCounter + 1
 end
-file.close 
+newFile.close 
