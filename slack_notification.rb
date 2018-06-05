@@ -45,3 +45,12 @@ else
     slackMessage = "<#{authorSlackUsername}> your recent commit for `#{branch}` has failed unit/UI tests.\n*PR:* #{pullRequestURL}\n*Log:* #{buildLogURL}"
     client.chat_postMessage(channel: slackChannel, text: slackMessage, as_user: true)
 end
+
+counter = 1
+file = File.new(ENV['BITRISE_STEP_FORMATTED_OUTPUT_FILE_PATH'], "r")
+puts file
+while (line = file.gets)
+    puts line
+    counter = counter + 1
+end
+file.close 
