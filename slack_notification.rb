@@ -56,10 +56,10 @@ if (xcode_test_did_fail)
     slack_message = ""
     if (is_built_from_develop || is_built_from_release)
         # release/develop
-        slack_message = "<!here>\n*Branch:* `#{branch_name}`\n*Commit author*\n<@#{commit_author_slack_username}>\n*Log*\n#{build_log_url}"
+        slack_message = "<!here>\n*Branch:* `#{branch_name}`\n*Commit author:* <@#{commit_author_slack_username}>\n*Log*: #{build_log_url}"
     else
         # PR
-        slack_message = "#*Pull Request:* #{pull_request_url}\n*Commit author: *<@#{commit_author_slack_username}>\n*Workflow:* #{workflow_title}\n*Log:* #{build_log_url}"
+        slack_message = "*Pull Request:* #{pull_request_url}\n*Commit author: *<@#{commit_author_slack_username}>\n*Workflow:* #{workflow_title}\n*Log:* #{build_log_url}"
     end 
     client.chat_postMessage(channel: slack_channel, text: slack_message, as_user: true)
 end
